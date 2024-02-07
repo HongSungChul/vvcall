@@ -6,7 +6,7 @@
 ## 2. vvcall
   [웹소스명세서 참조](./웹소스명세서.md)
 
-  타멧 링크 http://vvcall.co.kr/appv1
+  타겟 링크 http://vvcall.co.kr/appv1
   빌드 파일 리소스 경로 (로컬 경로 : ./appv1)
   - static (html파일을 제외한 모든 리소스) /home/tomcat/webapps/ROOT/WEB-INF/classes/static/appv1
   - view (index.html, logout.html)  /home/tomcat/webapps/ROOT/WEB-INF/classes/templates/view/appv1
@@ -14,7 +14,7 @@
 ## 3. vvcallmobile
   [웹소스명세서 참조](./웹소스명세서.md)
 
-  타멧 링크 http://vvcall.co.kr/mobileapp1
+  타겟 링크 http://vvcall.co.kr/mobileapp1
   빌드 파일 리소스 경로(로컬 경로 : ./mobileapp1)
   - static (html파일을 제외한 모든 리소스) /home/tomcat/webapps/ROOT/WEB-INF/classes/static/mobileapp1
   - view (index.html, logout.html)  /home/tomcat/webapps/ROOT/WEB-INF/classes/templates/view/mobileapp1
