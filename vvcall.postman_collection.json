@@ -1,0 +1,1186 @@
+{
+	"info": {
+		"_postman_id": "b402eaa8-6808-4a53-95ed-527de56d21f1",
+		"name": "vvcall",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these request types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a variable called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more scripts in \"Tests\" to verify if the API works as expected and execute flows.\n    \n\n## ℹ️ Resources\n\n[Building requests](https://learning.postman.com/docs/sending-requests/requests/)  \n[Authorizing requests](https://learning.postman.com/docs/sending-requests/authorization/)  \n[Using variables](https://learning.postman.com/docs/sending-requests/variables/)  \n[Managing environments](https://learning.postman.com/docs/sending-requests/managing-environments/)  \n[Writing scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20087910"
+	},
+	"item": [
+		{
+			"name": "로그인및공통",
+			"item": [
+				{
+					"name": "회원정보 (사용자 설정, 상단 테블릿 정보)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/staff/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"me"
+							]
+						},
+						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+					},
+					"response": []
+				},
+				{
+					"name": "로그인(토큰발급)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.environment.set(\"accessToken\",pm.response.json().accessToken);",
+									"pm.environment.set(\"cuid\",pm.response.json().cuid);",
+									"pm.environment.set(\"refreshToken\",pm.response.json().refreshToken);",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"ftest01\",\n    \"pw\":\"000000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/staff/token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"staff",
+								"token"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "로그인 (로그인처리)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accessToken\": \"{{accessToken}}\",\n    \"refreshToken\": \"{{refreshToken}}\",\n    \"cuid\": \"{{cuid}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/staff/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"staff",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원정보수정",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"홍길동\",\n    \"gender\": \"M\",\n    \"tel\": \"01012345678\",\n    \"email\": \"test@company.com\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "비밀번호수정",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"oldPass\": \"password\",\n\"newPass\": \"pass1234\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "상담원 상태변경",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\" : \"식사중\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/state",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "예약알림 목록",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "예약설문 상세정보",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "토큰재발급",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "전화홍보실행",
+			"item": [
+				{
+					"name": "진행중인 캠페인 목록",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJmdGVzdDAxIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTcwNDExNzQzM30.EO5yyJhDyYkZ7jCjk0nE4qQkkSDibLFIIWIgJ8iPA1GshHnQqkoO5LdVaDUHulpYrJyH1qO8bReRE5VRTks-UA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/staff/campaigns",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"campaigns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "캠페인 설문진행정보",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "홍보대상 정보수정",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"홍길동\",\n\"gender\": \"남성\", \n\"age\": \"30대\",\n\"area\": \"서울시 서초구\",\n\"etc\": \"특이사항 없음\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/db/:dblistMatchSeq",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"db",
+								":dblistMatchSeq"
+							],
+							"variable": [
+								{
+									"key": "dblistMatchSeq",
+									"value": "dblm_000000010230"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "신규DB 저장",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "직접입력 문자 저장",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "type",
+									"value": "MMS",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "텟트05",
+									"type": "text"
+								},
+								{
+									"key": "contents",
+									"value": "테스트입니다.",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/message",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "설문 일괄저장",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"seq\": \"dblm_000000010195\",\n        \"runningState\": \"통화성공\",\n        \"answers\": [\"예\", \"그 외\"],\n        \"remark\": \"테스트 통화성공\",\n        \"messageSend\": true,\n        \"messageSeq\": \"tsms_0000000005\",\n        \"callSend\": true,\n        \"callTime\": 55,\n        \"reservationDate\": null,\n        \"createDate\": \"2023-12-21 10:57:01\"\n    },\n    {\n        \"seq\": \"dblm_000000010200\",\n        \"runningState\": \"통화예약\",\n        \"answers\": [\"\", \"\"],\n        \"remark\": \"테스트 통화예약\",\n        \"messageSend\": true,\n        \"messageSeq\": \"isms_0000000004\",\n        \"callSend\": true,\n        \"callTime\": 27,\n        \"reservationDate\": \"2023-12-23 14:30:00\",\n        \"createDate\": \"2023-12-21 10:58:23\"\n    },\n    {\n        \"seq\": \"dblm_000000010210\",\n        \"runningState\": \"통화중\",\n        \"answers\": [\"\", \"\"],\n        \"remark\": \"테스트 통화중\",\n        \"messageSend\": false,\n        \"messageSeq\": \"\",\n        \"callSend\": true,\n        \"callTime\": 2,\n        \"reservationDate\": null,\n        \"createDate\": \"2023-12-21 10:59:59\"\n    }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/research",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"research"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "v2",
+			"item": [
+				{
+					"name": "토큰발급",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"sessionID\",pm.response.json().data.sessionID);",
+									"pm.environment.set(\"cuid\",pm.response.json().data.cuid);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"ftest01\",\n    \"pw\":\"000000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/staff/login/v2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"staff",
+								"login",
+								"v2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "문자발생총량",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/staff/message/count",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"message",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "설문일괄저장",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"cuid\": \"L15rJY3OA87Ki904078PZw14z7eir4CWFC07v80wi7qohgngWw\",\n        \"seq\": \"dblm_000000010195\",\n        \"runningState\": \"통화성공\",\n        \"answers\": [\"예\", \"그 외\"],\n        \"remark\": \"테스트 통화성공\",\n        \"messageSend\": true,\n        \"messageSeq\": \"tsms_0000000005\",\n        \"callSend\": true,\n        \"callTime\": 55,\n        \"reservationDate\": null,\n        \"createDate\": \"2023-12-21 10:57:01\"\n    },\n    {\n        \"cuid\": \"L15rJY3OA87Ki904078PZw14z7eir4CWFC07v80wi7qohgngWw\",\n        \"seq\": \"dblm_000000010200\",\n        \"runningState\": \"통화예약\",\n        \"answers\": [\"\", \"\"],\n        \"remark\": \"테스트 통화예약\",\n        \"messageSend\": true,\n        \"messageSeq\": \"isms_0000000004\",\n        \"callSend\": true,\n        \"callTime\": 27,\n        \"reservationDate\": \"2023-12-23 14:30:00\",\n        \"createDate\": \"2023-12-21 10:58:23\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/app/surveys",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"app",
+								"surveys"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "직접입력문자저장",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cuid",
+									"value": "{{cuid}}",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "SMS",
+									"description": "SMS/LMS/MMS",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "contents",
+									"value": "contents",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/app/message",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"app",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "신규디비저장",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"campaignSeq\": \"camp_0000000008\",\n    \"tel\": \"01012341235\",\n    \"name\": \"이순\",\n    \"gender\": \"M\",\n    \"age\": \"50대\",\n    \"area\": \"경기도 안양시\",\n    \"etc\": \"홍길동 친구\",\n    \"createDate\": \"2024-01-10 13:30:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/db/new",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"db",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "홍보대상수정",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"홍길동\",\n\"gender\": \"M\",\n\"age\": \"30대\",\n\"area\": \"서울시 서초구\",\n\"etc\": \"특이사항 없음\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/db/:dblistMatchSeq",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"db",
+								":dblistMatchSeq"
+							],
+							"variable": [
+								{
+									"key": "dblistMatchSeq",
+									"value": "sdfsdf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "켐페인설문진행정보",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "켐페인목록",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "예약설문상세정보",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/staff/survey/:seq",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"survey",
+								":seq"
+							],
+							"variable": [
+								{
+									"key": "seq",
+									"value": "camp_0000000003"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "예약알림 목록",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "상담원상태변경",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state\" : \"휴식중\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/state",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "비밀번호수정",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"oldPass\": \"password\",\n\"newPass\": \"pass1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/staff/password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원정보수정",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\": \"홍길동\",\n\"gender\": \"M\",\n\"tel\": \"01012345678\",\n\"email\": \"test@company.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://vvcall.co.kr/api/staff/me",
+							"protocol": "http",
+							"host": [
+								"vvcall",
+								"co",
+								"kr"
+							],
+							"path": [
+								"api",
+								"staff",
+								"me"
+							],
+							"query": [
+								{
+									"key": "cuid",
+									"value": "{{cuid}}",
+									"disabled": true
+								},
+								{
+									"key": "tmsSession",
+									"value": "{{sessionID}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "회원정보조회",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "켐페인상태확인",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "진행정보",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/staff-app/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"staff-app",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "cuid",
+								"value": "{{cuid}}",
+								"type": "text"
+							},
+							{
+								"key": "tmsSession",
+								"value": "{{sessionID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/staff/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"staff",
+								"logout"
+							],
+							"query": [
+								{
+									"key": "cuid",
+									"value": "{{cuid}}",
+									"disabled": true
+								},
+								{
+									"key": "tmsSession",
+									"value": "{{sessionID}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "me update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\": \"홍길동\",\n\"gender\": \"M\",\n\"tel\": \"01012345678\",\n\"email\": \"test@company.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://vvcall.co.kr/api/staff/me",
+					"protocol": "http",
+					"host": [
+						"vvcall",
+						"co",
+						"kr"
+					],
+					"path": [
+						"api",
+						"staff",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
