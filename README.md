@@ -29,6 +29,7 @@
    지원하는 최소 버젼 minSdk 24(오랜된 버변이라 무시하셔도 될것 같습니다.)
    [안드로이드 버젼 참조](https://source.android.com/docs/setup/about/build-numbers?hl=ko)
 
-
+## 7. 검수조소
+[검수조소파일 참조](./검수조서_240215.hwp)
        
     
